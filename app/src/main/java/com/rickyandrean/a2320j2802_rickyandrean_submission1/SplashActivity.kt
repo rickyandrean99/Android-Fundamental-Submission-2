@@ -20,6 +20,6 @@ class SplashActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val TIME = 1500
+        private const val TIME = 500
     }
 }

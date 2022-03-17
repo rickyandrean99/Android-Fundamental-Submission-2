@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,6 +34,10 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.users.observe(this, { users ->
             binding.rvUsers.adapter = UserAdapter(users)
         })
+
+        mainViewModel.loading.observe(this, {
+            showLoading(it)
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -47,7 +53,7 @@ class MainActivity : AppCompatActivity() {
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
                     mainViewModel.searchUsers(query)
-                    searchView.clearFocus()
+                    clearFocus()
 
                     return true
                 }
@@ -66,4 +72,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = super.onOptionsItemSelected(item)
+
+    private fun showLoading(isLoading: Boolean) {
+        with(binding) {
+            if (isLoading) {
+                progressBar.visibility = View.VISIBLE
+                rvUsers.visibility = View.GONE
+            } else {
+                progressBar.visibility = View.GONE
+                rvUsers.visibility = View.VISIBLE
+            }
+        }
+    }
 }

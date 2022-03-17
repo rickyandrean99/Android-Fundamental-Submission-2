@@ -9,4 +9,7 @@ interface ApiService {
 
     @GET("search/users")
     fun searchUser(@Query("q") username: String): Call<UserResponseSearch>
+
+    @GET("users/{username}")
+    fun getUserDetail(@Path("username") username: String): Call<UserDetail>
 }
