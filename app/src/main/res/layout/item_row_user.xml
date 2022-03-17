@@ -2,6 +2,7 @@
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/Card"
     app:cardCornerRadius="5dp"
     app:cardElevation="3dp">
@@ -21,29 +22,15 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_item_name"
-            style="@style/Item.Name"
-            android:text="@string/name"
+            android:id="@+id/tv_item_username"
+            style="@style/Item.Username"
+            android:layout_marginStart="24dp"
+            android:text="@string/username"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/img_item_avatar"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_item_username"
-            style="@style/Item.Username"
-            android:layout_marginTop="12dp"
-            android:text="@string/username"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/img_item_avatar"
-            app:layout_constraintTop_toBottomOf="@+id/tv_item_name" />
-
-        <TextView
-            android:id="@+id/tv_item_location"
-            style="@style/Item.Location"
-            android:layout_marginTop="16dp"
-            android:text="@string/location"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/img_item_avatar"
-            app:layout_constraintTop_toBottomOf="@+id/tv_item_username" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

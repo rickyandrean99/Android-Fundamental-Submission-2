@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.rickyandrean.a2320j2802_rickyandrean_submission1.databinding.ItemRowUserBinding
 
-class UserAdapter(private val listUser: ArrayList<User>) :
+class UserAdapter(private val listUser: ArrayList<UserResponseItem>) :
     RecyclerView.Adapter<UserAdapter.ListViewHolder>() {
     class ListViewHolder(var binding: ItemRowUserBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -17,21 +17,17 @@ class UserAdapter(private val listUser: ArrayList<User>) :
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        Glide.with(holder.itemView.context)
-            .load(listUser[position].avatar)
-            .circleCrop()
-            .into(holder.binding.imgItemAvatar)
-
-        with(holder.binding) {
-            tvItemName.text = listUser[position].name
-            tvItemUsername.text = listUser[position].username
-            tvItemLocation.text = listUser[position].location
-        }
+        holder.binding.tvItemUsername.text = listUser[position].login
 
         with(holder.itemView) {
+            Glide.with(context)
+                .load(listUser[position].avatarUrl)
+                .circleCrop()
+                .into(holder.binding.imgItemAvatar)
+
             setOnClickListener {
                 val detailUserIntent = Intent(context, DetailActivity::class.java)
-                detailUserIntent.putExtra(DetailActivity.EXTRA_USER, listUser[position])
+                detailUserIntent.putExtra(DetailActivity.USERNAME, listUser[position].login)
                 context.startActivity(detailUserIntent)
             }
         }
