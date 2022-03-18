@@ -1,7 +1,6 @@
 package com.rickyandrean.a2320j2802_rickyandrean_submission1
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -41,5 +40,17 @@ class FollowerFragment : Fragment() {
         followerViewModel.followers.observe(requireActivity(), {
             binding.rvFollower.adapter = UserAdapter(it)
         })
+
+        followerViewModel.loading.observe(requireActivity(), {
+            showLoading(it)
+        })
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBarFollower.visibility = View.VISIBLE
+        } else {
+            binding.progressBarFollower.visibility = View.GONE
+        }
     }
 }

@@ -10,14 +10,20 @@ import retrofit2.Response
 
 class FollowerViewModel: ViewModel() {
     private val _followers = MutableLiveData<ArrayList<UserResponseItem>>()
+    private val _loading = MutableLiveData<Boolean>()
 
     val followers: LiveData<ArrayList<UserResponseItem>> = _followers
+    val loading: LiveData<Boolean> = _loading
     var callFirstTime: Boolean = true
 
     fun loadFollowers(username: String) {
+        _loading.value = true
+
         val client = ApiConfig.getApiService().getFollowers(username)
         client.enqueue(object: Callback<ArrayList<UserResponseItem>> {
             override fun onResponse(call: Call<ArrayList<UserResponseItem>>, response: Response<ArrayList<UserResponseItem>>) {
+                _loading.value = false
+
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null) {
@@ -29,6 +35,7 @@ class FollowerViewModel: ViewModel() {
             }
 
             override fun onFailure(call: Call<ArrayList<UserResponseItem>>, t: Throwable) {
+                _loading.value = false
                 Log.e(TAG, "onFailure: ${t.message}")
             }
         })
