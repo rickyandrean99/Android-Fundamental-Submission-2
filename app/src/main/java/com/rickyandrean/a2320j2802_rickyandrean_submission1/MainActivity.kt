@@ -8,18 +8,15 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rickyandrean.a2320j2802_rickyandrean_submission1.databinding.ActivityMainBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val mainViewModel by viewModels<MainViewModel>()
+    private var open: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,11 +37,11 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.option_menu, menu)
 
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        val searchView = menu?.findItem(R.id.app_bar_search)?.actionView as SearchView
+        val searchView = menu.findItem(R.id.app_bar_search).actionView as SearchView
 
         with(searchView) {
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
@@ -52,6 +49,7 @@ class MainActivity : AppCompatActivity() {
 
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
+                    Log.d("result", "tembak submit")
                     mainViewModel.searchUsers(query)
                     clearFocus()
 
@@ -59,8 +57,18 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onQueryTextChange(newText: String): Boolean {
-                    if (newText.isEmpty()) {
+                    // 'open' variable used so that when the user open search view for the first time,
+                    // the app will not load again the mainViewModel.loadUsers().
+                    // The mainViewModel.loadUsers() will execute again after user typing something
+                    // and then remove the text until empty or clear it.
+                    // I used this way because onQueryTextSubmit can't detect empty string
+                    Log.d("result", "tembak change")
+                    if (newText.isEmpty() && open) {
+                        Log.d("result", "tembak load")
                         mainViewModel.loadUsers()
+                    } else if (newText.isEmpty()) {
+                        Log.d("result", "tembak awal") // Jika rotate dan dijalankan, ini jalan terus diawal
+                        open = true
                     }
 
                     return false

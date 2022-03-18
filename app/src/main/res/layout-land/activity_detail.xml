@@ -60,14 +60,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_end="110dp" />
+            app:layout_constraintGuide_end="290dp" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_begin="110dp" />
+            app:layout_constraintGuide_begin="290dp" />
 
         <TextView
             android:id="@+id/tv_detail_name"

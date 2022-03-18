@@ -46,7 +46,7 @@ class MainViewModel: ViewModel() {
 
     fun searchUsers(name: String) {
         _loading.value = true
-
+        
         val client = ApiConfig.getApiService().searchUser(name)
         client.enqueue(object : Callback<UserResponseSearch> {
             override fun onResponse(call: Call<UserResponseSearch>, response: Response<UserResponseSearch>) {

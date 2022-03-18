@@ -2,6 +2,7 @@ package com.rickyandrean.a2320j2802_rickyandrean_submission1
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
@@ -17,10 +18,15 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val username = intent.getStringExtra(USERNAME).toString()
+        with(detailViewModel) {
+            if (callFirstTime) {
+                username = intent.getStringExtra(USERNAME).toString()
+                loadDetailUser(detailViewModel.username)
+                callFirstTime = false
+            }
+        }
 
-        detailViewModel.loadDetailUser(username)
-        supportActionBar?.title = username
+        supportActionBar?.title = detailViewModel.username
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         detailViewModel.user.observe(this, { user ->
