@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rickyandrean.a2320j2802_rickyandrean_submission1.databinding.FragmentFollowerBinding
@@ -32,7 +33,9 @@ class FollowerFragment : Fragment() {
 
         with(followerViewModel) {
             if (callFirstTime) {
-                loadFollowers(requireActivity().intent.getStringExtra(DetailActivity.USERNAME).toString())
+                loadFollowers(
+                    requireActivity().intent.getStringExtra(DetailActivity.USERNAME).toString()
+                )
                 callFirstTime = false
             }
         }
@@ -43,6 +46,12 @@ class FollowerFragment : Fragment() {
 
         followerViewModel.loading.observe(requireActivity(), {
             showLoading(it)
+        })
+
+        followerViewModel.error.observe(requireActivity(), {
+            it.handler()?.let { error ->
+                Toast.makeText(requireActivity(), error, Toast.LENGTH_LONG).show()
+            }
         })
     }
 

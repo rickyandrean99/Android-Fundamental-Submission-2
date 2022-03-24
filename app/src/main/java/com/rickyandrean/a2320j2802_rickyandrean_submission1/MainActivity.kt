@@ -4,10 +4,10 @@ import android.app.SearchManager
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,6 +35,12 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.loading.observe(this, {
             showLoading(it)
         })
+
+        mainViewModel.error.observe(this, {
+            it.handler()?.let { error ->
+                Toast.makeText(this, error, Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -49,10 +55,8 @@ class MainActivity : AppCompatActivity() {
 
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
-                    Log.d("result", "tembak submit")
                     mainViewModel.searchUsers(query)
                     clearFocus()
-
                     return true
                 }
 
@@ -62,12 +66,9 @@ class MainActivity : AppCompatActivity() {
                     // The mainViewModel.loadUsers() will execute again after user typing something
                     // and then remove the text until empty or clear it.
                     // I used this way because onQueryTextSubmit can't detect empty string
-                    Log.d("result", "tembak change")
                     if (newText.isEmpty() && open) {
-                        Log.d("result", "tembak load")
                         mainViewModel.loadUsers()
                     } else if (newText.isEmpty()) {
-                        Log.d("result", "tembak awal") // Jika rotate dan dijalankan, ini jalan terus diawal
                         open = true
                     }
 

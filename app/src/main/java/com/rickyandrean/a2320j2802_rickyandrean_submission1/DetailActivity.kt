@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import com.bumptech.glide.Glide
@@ -40,15 +41,17 @@ class DetailActivity : AppCompatActivity() {
                 tvDetailName.text = user?.name ?: "(no name)"
                 tvDetailLocation.text = user?.location ?: "(no location)"
                 tvDetailCompany.text = user?.company ?: "(no company)"
-                tvDetailRepository.text = StringBuilder().append(user?.repositories ?: 0).append("\n repositories")
-                tvDetailFollowers.text = StringBuilder().append(user?.followers ?: 0).append("\n Followers")
-                tvDetailFollowing.text = StringBuilder().append(user?.following ?: 0).append("\n Following")
+                tvDetailRepository.text =
+                    StringBuilder().append(user?.repositories ?: 0).append("\n repositories")
+                tvDetailFollowers.text =
+                    StringBuilder().append(user?.followers ?: 0).append("\n Followers")
+                tvDetailFollowing.text =
+                    StringBuilder().append(user?.following ?: 0).append("\n Following")
             }
 
             val viewPager = binding.viewPager
             val tabs = binding.tabs
-            val adapter = SectionPagerAdapter(this)
-            viewPager.adapter = adapter
+            viewPager.adapter = SectionPagerAdapter(this)
             TabLayoutMediator(tabs, viewPager) { tab, position ->
                 tab.text = resources.getString(TITLES[position])
             }.attach()
@@ -57,14 +60,18 @@ class DetailActivity : AppCompatActivity() {
         detailViewModel.loading.observe(this, {
             showLoading(it)
         })
+
+        detailViewModel.error.observe(this, {
+            it.handler()?.let { error ->
+                Toast.makeText(this, error, Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Make sure user click back button. I got this number by logging
         // the item.itemId.toString because I don't know the id of back button
-        if (item.itemId.toString() == BACK_BUTTON) {
-            finish()
-        }
+        if (item.itemId.toString() == BACK_BUTTON) finish()
 
         return super.onOptionsItemSelected(item)
     }
